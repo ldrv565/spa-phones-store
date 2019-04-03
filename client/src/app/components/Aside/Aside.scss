@@ -1,0 +1,41 @@
+@import "../variables.scss";
+
+$white: #f0f0f0;
+$lightgray: #9b9b9b;
+
+.aside {
+	position: fixed;
+	width: 10 * $atom;
+	min-height: 100vh;
+	overflow: auto;
+	background: $darkgrey;
+
+	&__inner {
+		padding: $atom;
+		box-sizing: border-box;
+	}
+
+	&__title {
+		color: $white;
+	}
+
+	&__text {
+		color: $lightgray;
+		font-size: 14px;
+	}
+
+	&.--active {
+		@media ($medium) {
+			width: 260px;
+			padding-right: 60px;
+			display: block;
+		}
+	}
+
+	@media ($medium) {
+		display: none;
+		top: 0;
+		left: 0;
+		bottom: 0;
+	}
+}

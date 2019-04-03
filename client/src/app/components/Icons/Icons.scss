@@ -1,0 +1,8 @@
+@import "../variables.scss";
+
+.icon {
+	margin: 0.25 * $atom;
+	&.--left {
+		margin-left: 0;
+	}
+}

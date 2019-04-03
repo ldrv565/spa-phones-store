@@ -1,0 +1,27 @@
+@import "../variables.scss";
+
+$lightgrey: rgba($darkgrey, 0.5);
+
+.card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex-basis: 33.3%;
+	padding: $atom;
+	margin-bottom: $atom;
+	box-sizing: border-box;
+	text-align: center;
+
+	&__image {
+		height: 6 * $atom;
+		padding-bottom: 0.5 * $atom;
+	}
+
+	@media ($extra_large) {
+		flex-basis: 50%;
+	}
+
+	@media ($small) {
+		flex-basis: 100%;
+	}
+}

@@ -1,0 +1,30 @@
+@import "../variables.scss";
+
+$lightgray: #d3d3d3;
+
+.linkButton {
+	display: inline-block;
+	padding: 0.4 * $atom 1.2 * $atom;
+	margin: 0.5 * $atom 0;
+	border-radius: 4px;
+	border-width: 1px;
+	font-family: "Roboto";
+	outline: 0;
+	background: white;
+	border: 1px solid $lightgray;
+	cursor: pointer;
+
+	&.--rounded {
+		padding: 0.25 * $atom $atom;
+		border-radius: 50px;
+	}
+
+	&:active {
+		background: $darkgrey;
+		color: $lightgray;
+	}
+
+	@media ($small) {
+		font-size: 12px;
+	}
+}

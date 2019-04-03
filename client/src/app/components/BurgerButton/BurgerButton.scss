@@ -1,0 +1,32 @@
+@import "../variables.scss";
+
+$lightgray: #9b9b9b;
+
+.burgerButton {
+	position: fixed;
+	top: 1.25 * $atom;
+	left: 0.5 * $atom;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background: $darkgrey;
+	color: white;
+	border-width: 1px;
+	outline: none;
+	height: 40px;
+	width: 40px;
+	border-radius: 5px;
+	cursor: pointer;
+
+	&.--active {
+		position: absolute;
+		background: white;
+		color: $darkgrey;
+		left: auto;
+		right: $atom;
+	}
+
+	@media ($medium) {
+		display: flex;
+	}
+}

@@ -1,0 +1,17 @@
+@import "../variables.scss";
+
+.title {
+	padding: 0.25 * $atom 0;
+	font-size: 21px;
+
+	&.--subtitle {
+		font-size: 18;
+		@media ($extra_large) {
+			font-size: calc((100vw - 320px) / (1440 - 320) * (18 - 14) + 14px);
+		}
+	}
+
+	@media ($extra_large) {
+		font-size: calc((100vw - 320px) / (1440 - 320) * (21 - 14) + 14px);
+	}
+}

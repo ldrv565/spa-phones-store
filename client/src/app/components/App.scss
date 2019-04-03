@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+body {
+	font-family: "Roboto";
+	overflow-x: hidden;
+	margin: 0;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: unset;
+	margin: unset;
+}
+
+a {
+	text-decoration: unset;
+	color: unset;
+}
+
+p {
+	margin: 0;
+}
+
+.app {
+	display: flex;
+}

@@ -1,0 +1,17 @@
+@import "../variables.scss";
+
+$lightgray: #969696;
+
+.nav {
+	&__list {
+		padding: 0;
+	}
+	&__item {
+		list-style: none;
+		padding: 0.25 * $atom 0;
+	}
+	&__link {
+		color: $lightgray;
+		text-transform: uppercase;
+	}
+}

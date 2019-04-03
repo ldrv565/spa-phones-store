@@ -1,0 +1,25 @@
+@import "../variables.scss";
+
+$lightgray: #969696;
+
+.text {
+	padding: 0.25 * $atom 0;
+
+	&.--meta {
+		font-size: 14px;
+		color: $lightgray;
+		padding-bottom: 0.5 * $atom;
+
+		@media ($medium) {
+			font-size: 12px;
+		}
+	}
+
+	&.--note {
+		padding: $atom 0;
+	}
+
+	@media ($medium) {
+		font-size: 12px;
+	}
+}

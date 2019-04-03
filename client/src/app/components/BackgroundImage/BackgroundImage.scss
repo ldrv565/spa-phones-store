@@ -1,0 +1,9 @@
+@import "../variables.scss";
+
+.backgroundImage {
+	height: 100%;
+
+	&.--cover {
+		background-size: cover;
+	}
+}

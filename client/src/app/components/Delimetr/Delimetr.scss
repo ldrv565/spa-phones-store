@@ -1,0 +1,17 @@
+@import "../variables.scss";
+
+$lightgray: #9b9b9b;
+$lightgray2: #5e5e5e;
+
+.delimetr {
+	width: 100%;
+	height: 0;
+	border-bottom: 1px solid;
+	border-bottom-color: $lightgray;
+	margin: 0.5 * $atom 0;
+	&.--short {
+		width: 70%;
+		margin-right: 30%;
+		border-bottom-color: $lightgray2;
+	}
+}
