@@ -11,6 +11,7 @@ $lightgrey: rgba($darkgrey, 0.5);
 	margin-bottom: $atom;
 	box-sizing: border-box;
 	text-align: center;
+	overflow: hidden;
 
 	&__image {
 		height: 6 * $atom;

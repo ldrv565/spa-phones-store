@@ -5,12 +5,9 @@ import Title from '../../components/Title/Title';
 import Text from '../../components/Text/Text';
 import Image from '../../components/Image/Image';
 
-import img from '../../../assets/img.jpg';
-
-
 const About = () => (
     <React.Fragment>
-        <Image src={img} alt="img" />
+        <Image src="/api/image/img.jpg" alt="img" />
         <Content>
             <Title>
                 {'About me.'}

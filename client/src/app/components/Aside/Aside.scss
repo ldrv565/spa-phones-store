@@ -8,7 +8,8 @@ $lightgray: #9b9b9b;
 	width: 10 * $atom;
 	min-height: 100vh;
 	overflow: auto;
-	background: $darkgrey;
+	border-right: 1px solid $darkgrey;
+	background: white;
 
 	&__inner {
 		padding: $atom;

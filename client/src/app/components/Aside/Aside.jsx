@@ -5,7 +5,6 @@ import './Aside.scss';
 
 import Nav from '../Nav/Nav';
 import Title from '../Title/Title';
-import Text from '../Text/Text';
 import Delimetr from '../Delimetr/Delimetr';
 import Icons from '../Icons/Icons';
 import BurgerButton from '../BurgerButton/BurgerButton';
@@ -30,12 +29,9 @@ class Aside extends React.Component {
             <React.Fragment>
                 <aside className={calssnames('aside', {'--active': this.state.active})}>
                     <section className="aside__inner">
-                        <Title className="aside__title" h={2}>
-                            {'My personal blog'}
+                        <Title h={2}>
+                            {'menu'}
                         </Title>
-                        <Text className="aside__text">
-                            {'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sit amet sodales ipsum. Aenean felis nibh, dignissim eu tortor ut, pulvinar commodo tortor. Pellentesque gravida sapien velit, in pellentesque sapien sagittis nec.'}
-                        </Text>
                         <Delimetr modifier="short" />
                         <Nav />
                         <Delimetr modifier="short" />

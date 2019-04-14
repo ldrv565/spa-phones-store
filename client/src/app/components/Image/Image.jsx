@@ -1,9 +1,14 @@
 import * as React from 'react';
+import classnames from 'classnames';
 
 import './Image.scss';
 
-const Icons = props => (
-    <img className="image" src={props.src} alt={props.alt} />
+const Image = props => (
+    <img
+        className={classnames(props.className, 'image', {[`--${props.modifier}`]: props.modifier})}
+        src={props.src}
+        alt={props.alt}
+    />
 );
 
-export default Icons;
+export default Image;

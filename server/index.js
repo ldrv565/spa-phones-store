@@ -18,19 +18,24 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/phones', (req, res) => {
-    db.any('SELECT * FROM model')
-        .then(phones => {
-            res.send(phones);
-        })
+    db.any('SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor')
+        .then(phones => res.send(phones))
         .catch(error => console.error(error));
 });
 
 app.get('/api/phone/:id', (req, res) => {
-    db.oneOrNone('SELECT * FROM model WHERE id_model = $1', [Number.parseInt(req.params.id, 10)])
-        .then(phone => {
-            res.send(phone);
+    db.oneOrNone(`SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor WHERE id_model = ${+req.params.id}`)
+        .then(data => {
+            db.any(`SELECT name, value, unit from detail_value left join detail on detail_value.id_detail = detail.id_detail WHERE id_model = ${+req.params.id}`)
+                .then(details => res.send({data, details}))
         })
         .catch(error => console.error(error));
+});
+
+app.get('/api/image/:imageName', (req, res) => {
+    const filepath = path.join(__dirname, '/assets/', req.params.imageName);
+    console.log(filepath);
+    res.sendFile(filepath);
 });
 
 app.get('/api/brands', (req, res) => {

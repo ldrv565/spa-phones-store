@@ -1,29 +1,31 @@
 import * as React from 'react';
 
+import Title from '../Title/Title';
 import Meta from '../Meta/Meta';
 import Text from '../Text/Text';
 import LinkButton from '../LinkButton/LinkButton';
 import Delimetr from '../Delimetr/Delimetr';
-import BackgroundImage from '../BackgroundImage/BackgroundImage';
-
-import imgSrc from '../../../assets/img.jpg';
+import Image from '../Image/Image';
 
 import './Card.scss';
 
-const Card = props => (
+const Card = ({phone}) => (
     <article className="card">
         <section className="card__head">
             <section className="card__image">
-                <BackgroundImage src={imgSrc} modifier="cover" />
+                <Image src={phone.imgSrc || `/api/image/${phone.id_model}.jpg`} />
             </section>
-            <Meta name={props.phone.name} />
+            <Title modifier="subtitle" h={2}>
+                {phone.name}
+            </Title>
+            <Meta name={phone.vendor} />
         </section>
         <Text>
-            {props.phone.description}
+            {phone.description}
         </Text>
         <section>
-            <LinkButton link={`/phone/${props.phone.id_model}`} modifier="rounded">
-                {'Countinue reading'}
+            <LinkButton link={`/phone/${phone.id_model}`} modifier="rounded">
+                {'buy'}
             </LinkButton>
             <Delimetr />
         </section>
