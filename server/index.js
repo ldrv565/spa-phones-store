@@ -6,7 +6,7 @@ const db = require('./database');
 
 const app = express();
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -18,16 +18,23 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/phones', (req, res) => {
-    db.any('SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor')
+    db.any(
+        'SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor'
+    )
         .then(phones => res.send(phones))
         .catch(error => console.error(error));
 });
 
 app.get('/api/phone/:id', (req, res) => {
-    db.oneOrNone(`SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor WHERE id_model = ${+req.params.id}`)
+    db.oneOrNone(
+        `SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor WHERE id_model = ${+req
+            .params.id}`
+    )
         .then(data => {
-            db.any(`SELECT name, value, unit from detail_value left join detail on detail_value.id_detail = detail.id_detail WHERE id_model = ${+req.params.id}`)
-                .then(details => res.send({data, details}))
+            db.any(
+                `SELECT name, value, unit from detail_value left join detail on detail_value.id_detail = detail.id_detail WHERE id_model = ${+req
+                    .params.id}`
+            ).then(details => res.send({ data, details }));
         })
         .catch(error => console.error(error));
 });
@@ -46,7 +53,7 @@ app.post('/api/products', (req, res) => {
     const product = {
         id: nextId,
         title: req.body.title,
-        completed: false,
+        completed: false
     };
     nextId += 1;
     products.push(product);
@@ -55,7 +62,10 @@ app.post('/api/products', (req, res) => {
 });
 
 app.put('/api/products/:id', (req, res) => {
-    const product = products.find(currentProduct => currentProduct.id === Number.parseInt(req.params.id, 10));
+    const product = products.find(
+        currentProduct =>
+            currentProduct.id === Number.parseInt(req.params.id, 10)
+    );
 
     if (!product) return res.sendStatus(404);
 
@@ -65,7 +75,10 @@ app.put('/api/products/:id', (req, res) => {
 });
 
 app.patch('/api/products/:id', (req, res) => {
-    const product = products.find(currentProduct => currentProduct.id === Number.parseInt(req.params.id, 10));
+    const product = products.find(
+        currentProduct =>
+            currentProduct.id === Number.parseInt(req.params.id, 10)
+    );
 
     if (!product) return res.sendStatus(404);
 
@@ -75,7 +88,9 @@ app.patch('/api/products/:id', (req, res) => {
 });
 
 app.delete('/api/products/:id', (req, res) => {
-    const index = products.findIndex(product => product.id === Number.parseInt(req.params.id, 10));
+    const index = products.findIndex(
+        product => product.id === Number.parseInt(req.params.id, 10)
+    );
 
     if (index === -1) return res.sendStatus(404);
 
