@@ -4,7 +4,7 @@ import './style.scss';
 
 const Count = ({ value, setValue }) => {
     const changeValue = inputValue =>
-        setValue((inputValue > 0 && inputValue) || 1);
+        setValue((inputValue > 0 && inputValue) || value);
     const increment = () => setValue(value + 1);
     const decrement = () => setValue((value > 0 && value - 1) || 1);
 

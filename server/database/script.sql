@@ -41,24 +41,20 @@ id_detail INT NOT NULL,
 PRIMARY KEY (id_detail_value) 
 ); 
 
-CREATE TABLE order_model( 
-id_order_model INT NOT NULL, 
+CREATE TABLE model_order( 
+id_model_order SERIAL PRIMARY KEY,
+id_order INT REFERENCES order_table(id_order) NOT NULL,
 id_model INT REFERENCES model(id_model) NOT NULL,
-count INT NOT NULL,
-id_order INT REFERENCES order(id_order) NOT NULL,
-PRIMARY KEY (id_order_model) 
+count INT NOT NULL
 ); 
 
-CREATE TABLE order( 
-id_order INT NOT NULL, 
-id_user INT REFERENCES user(id_user) NOT NULL,
-total_cost FLOAT NOT NULL,
-PRIMARY KEY (id_order)
+CREATE TABLE order_table( 
+id_order SERIAL PRIMARY KEY, 
+id_user INT REFERENCES user_table(id_user) NOT NULL
 ); 
 
-CREATE TABLE user(
-id_user INT NOT NULL, 
+CREATE TABLE user_table(
+id_user SERIAL PRIMARY KEY,
 login VARCHAR(100) NOT NULL,
-password VARCHAR(100) NOT NULL,
-PRIMARY KEY (login) 
+password VARCHAR(100) NOT NULL
 );
