@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './Nav.scss';
 
@@ -14,6 +14,11 @@ const Nav = () => (
             <li className="nav__item">
                 <Link to="/about" className="nav__link">
                     {'About'}
+                </Link>
+            </li>
+            <li className="nav__item">
+                <Link to="/cart" className="nav__link">
+                    {'Cart'}
                 </Link>
             </li>
         </ul>

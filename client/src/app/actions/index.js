@@ -6,13 +6,14 @@ export const SET_POST = 'SET_POST';
 
 const url = '/api';
 
-export function getPosts() {
+export function getPosts(query) {
     return (dispatch) => {
         dispatch({
             type: GET_POSTS,
         });
 
-        return axios.get(`${url}/phones`)
+        return axios
+            .get(`${url}/phones`, query)
             .then(response => response.data)
             .then(posts => dispatch({
                 type: SET_POSTS,
@@ -30,7 +31,8 @@ export function getPost(id) {
             type: GET_POSTS,
         });
 
-        return axios.get(`${url}/phone/${id}`)
+        return axios
+            .get(`${url}/phone/${id}`)
             .then(response => response.data)
             .then(phone => dispatch({
                 type: SET_POST,

@@ -1,0 +1,27 @@
+@import "../../components/variables.scss";
+
+.article {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 100%;
+
+	&__head {
+		text-align: center;
+		flex-basis: 100%;
+	}
+
+	&__main {
+		flex-basis: 55%;
+	}
+
+	&__aside {
+		flex-basis: 40%;
+		padding-right: 5%;
+	}
+
+	&__footer {
+		text-align: center;
+		flex-basis: 100%;
+	}
+}
