@@ -5,7 +5,9 @@ import './Image.scss';
 
 const Image = props => (
     <img
-        className={classnames(props.className, 'image', {[`--${props.modifier}`]: props.modifier})}
+        className={classnames(props.className, 'image', {
+            [`--${props.modifier}`]: props.modifier
+        })}
         src={props.src}
         alt={props.alt}
     />

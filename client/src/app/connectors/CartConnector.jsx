@@ -1,25 +1,25 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import Cart from '../pages/Cart/Cart';
 
-import {getPosts} from '../actions';
+import { getCart } from '../actions';
 
 function mapStateToProps(state) {
     return {
-        posts: state.posts,
-        fetching: state.fetching,
+        cart: state.cart,
+        fetching: state.fetching
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPosts: query => dispatch(getPosts(query)),
+        getCart: () => dispatch(getCart())
     };
 }
 
 const CartConnector = connect(
     mapStateToProps,
-    mapDispatchToProps,
+    mapDispatchToProps
 )(Cart);
 
 export default CartConnector;

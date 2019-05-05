@@ -14,34 +14,44 @@ class Aside extends React.Component {
         super(props);
 
         this.state = {
-            active: false,
+            active: false
         };
 
         this.handleAside = this.handleAside.bind(this);
     }
 
     handleAside() {
-        this.setState(prevState => ({active: !prevState.active}));
+        this.setState(prevState => ({ active: !prevState.active }));
     }
 
     render() {
         return (
             <React.Fragment>
-                <aside className={calssnames('aside', {'--active': this.state.active})}>
+                <aside
+                    className={calssnames('aside', {
+                        '--active': this.state.active
+                    })}
+                >
                     <section className="aside__inner">
-                        <Title h={2}>
-                            {'menu'}
-                        </Title>
+                        <Title h={2}>menu</Title>
                         <Delimetr modifier="short" />
                         <Nav />
                         <Delimetr modifier="short" />
                         <Icons />
                     </section>
-                    {this.state.active
-                        && <BurgerButton active={this.state.active} onClick={this.handleAside} />}
+                    {this.state.active && (
+                        <BurgerButton
+                            active={this.state.active}
+                            onClick={this.handleAside}
+                        />
+                    )}
                 </aside>
-                {!this.state.active
-                    && <BurgerButton active={this.state.active} onClick={this.handleAside} />}
+                {!this.state.active && (
+                    <BurgerButton
+                        active={this.state.active}
+                        onClick={this.handleAside}
+                    />
+                )}
             </React.Fragment>
         );
     }

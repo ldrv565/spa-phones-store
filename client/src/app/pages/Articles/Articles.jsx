@@ -9,20 +9,27 @@ class Articles extends React.Component {
         super(props);
 
         this.state = {
-            posts: [],
+            phones: []
         };
 
         this.partLength = 10;
         this.loadMore = this.loadMore.bind(this);
     }
 
+    componentWillMount() {
+        this.props.getPosts();
+    }
+
     loadMore() {
-        const currentCount = this.state.posts.length;
+        const currentCount = this.state.phones.length;
         this.setState(prevState => ({
-            posts: [
-                ...prevState.posts,
-                ...this.props.posts.slice(currentCount, currentCount + this.partLength),
-            ],
+            phones: [
+                ...prevState.phones,
+                ...this.props.phones.slice(
+                    currentCount,
+                    currentCount + this.partLength
+                )
+            ]
         }));
     }
 
@@ -31,16 +38,13 @@ class Articles extends React.Component {
             <InfiniteScroll
                 pageStart={0}
                 loadMore={this.loadMore}
-                hasMore={this.state.posts.length < this.props.posts.length}
+                hasMore={this.state.phones.length < this.props.phones.length}
                 loader={<div key={0}>Loading...</div>}
             >
                 <Content>
-
-                    {
-                        this.state.posts.map(phone => (
-                            <Card key={phone.id_model} phone={phone} />
-                        ))
-                    }
+                    {this.state.phones.map(phone => (
+                        <Card key={phone.id_model} phone={phone} />
+                    ))}
                 </Content>
             </InfiniteScroll>
         );

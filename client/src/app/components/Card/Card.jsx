@@ -9,20 +9,20 @@ import Image from '../Image/Image';
 
 import './Card.scss';
 
-const Card = ({phone}) => (
+const Card = ({ phone }) => (
     <article className="card">
         <section className="card__head">
             <section className="card__image">
-                <Image src={phone.imgSrc || `/api/image/${phone.id_model}.jpg`} />
+                <Image
+                    src={phone.imgSrc || `/api/image/${phone.id_model}.jpg`}
+                />
             </section>
             <Title modifier="subtitle" h={2}>
-                {phone.name}
+                {`${phone.vendor} ${phone.name}`}
             </Title>
-            <Meta name={phone.vendor} />
+            <Meta name={`${phone.price} р.`} />
         </section>
-        <Text>
-            {phone.description}
-        </Text>
+        <Text>{phone.description}</Text>
         <section>
             <LinkButton link={`/phone/${phone.id_model}`} modifier="rounded">
                 {'buy'}

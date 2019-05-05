@@ -4,7 +4,11 @@ import classnames from 'classnames';
 import './BurgerButton.scss';
 
 const BurgerButton = props => (
-    <button className={classnames('burgerButton', {'--active': props.active})} type="button" onClick={props.onClick}>
+    <button
+        className={classnames('burgerButton', { '--active': props.active })}
+        type="button"
+        onClick={props.onClick}
+    >
         {'☰'}
     </button>
 );

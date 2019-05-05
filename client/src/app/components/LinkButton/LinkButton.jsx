@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
 import './LinkButton.scss';
@@ -21,7 +21,9 @@ class LinkButton extends React.PureComponent {
         return (
             <Link
                 to={this.props.link}
-                className={classnames('linkButton', {[`--${this.props.modifier}`]: this.props.modifier})}
+                className={classnames('linkButton', {
+                    [`--${this.props.modifier}`]: this.props.modifier
+                })}
                 onClick={this.handleClick}
             >
                 {this.props.children}

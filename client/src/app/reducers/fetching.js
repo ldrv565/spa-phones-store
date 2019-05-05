@@ -1,4 +1,4 @@
-import {GET_POSTS, SET_POSTS, SET_POST} from '../actions';
+import { GET_POSTS, SET_POSTS, SET_CART, SET_POST } from '../actions';
 
 const reducer = (state = false, action) => {
     if (action.type === GET_POSTS) {
@@ -6,6 +6,10 @@ const reducer = (state = false, action) => {
     }
 
     if (action.type === SET_POSTS) {
+        return false;
+    }
+
+    if (action.type === SET_CART) {
         return false;
     }
 

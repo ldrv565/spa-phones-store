@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import AppConnector from './connectors/AppConnector';
 import createStore from './store';
 
-const {store, persistor} = createStore();
+const { store, persistor } = createStore();
 
 ReactDOM.render(
     <Provider store={store}>
@@ -14,5 +14,5 @@ ReactDOM.render(
             <AppConnector />
         </PersistGate>
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById('root')
 );

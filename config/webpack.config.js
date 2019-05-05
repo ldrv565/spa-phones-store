@@ -9,122 +9,122 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const root = path.resolve(__dirname, '../');
 
-module.exports = (env) => {
-  const devtool = env && env.production ? 'none' : 'cheap-module-source-map';
-  const mode = env && env.production ? 'production' : 'development';
+module.exports = env => {
+    const devtool = env && env.production ? 'none' : 'cheap-module-source-map';
+    const mode = env && env.production ? 'production' : 'development';
 
-  return {
-    bail: true,
-    entry: ['@babel/polyfill', './client/src/app/app.jsx'],
-    devServer: {
-      historyApiFallback: true,
-      contentBase: './build',
-      hot: true,
-      proxy: {
-        "/api": "http://localhost:3000",
-      },
-    },
-    devtool,
-    mode,
-    module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: 'babel-loader',
-            },
-            {
-              loader: "eslint-loader",
-              options: {
-                emitWarning: true,
-                configFile: "./.eslintrc.js"
-              }
+    return {
+        bail: true,
+        entry: ['@babel/polyfill', './client/src/app/app.jsx'],
+        devServer: {
+            historyApiFallback: true,
+            contentBase: './build',
+            hot: true,
+            proxy: {
+                '/api': 'http://localhost:3000'
             }
-          ],
         },
-        {
-          test: /\.(scss|css)$/,
-          use: [
-            mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                url: false,
-                sourceMap: true,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: () => autoprefixer,
-              },
-            },
-            'sass-loader',
-          ],
+        devtool,
+        mode,
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader'
+                        },
+                        {
+                            loader: 'eslint-loader',
+                            options: {
+                                emitWarning: true,
+                                configFile: './.eslintrc'
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.(scss|css)$/,
+                    use: [
+                        mode === 'production'
+                            ? MiniCssExtractPlugin.loader
+                            : 'style-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                url: false,
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: () => autoprefixer
+                            }
+                        },
+                        'sass-loader'
+                    ]
+                },
+                {
+                    test: /\.(gif|png|jpe?g|svg)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]'
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.(ttf|eot|woff|woff2)$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: 'fonts/[name].[ext]'
+                            }
+                        }
+                    ]
+                }
+            ]
         },
-        {
-          test: /\.(gif|png|jpe?g|svg)$/i,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name].[ext]',
-              },
+        resolve: {
+            alias: {
+                components: path.join(
+                    root,
+                    'src/_common/components/components.js'
+                ),
+                helpers: path.join(root, 'src/helpers')
             },
-          ],
-        }, {
-          test: /\.(ttf|eot|woff|woff2)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: 'fonts/[name].[ext]',
-              },
-            },
-          ],
+            modules: [path.resolve(root, 'src'), 'node_modules'],
+            extensions: ['.js', '.jsx', '.css', '.scss']
         },
-      ],
-    },
-    resolve: {
-      alias: {
-        components: path.join(root, 'src/_common/components/components.js'),
-        helpers: path.join(root, 'src/helpers'),
-      },
-      modules: [
-        path.resolve(root, 'src'),
-        'node_modules',
-      ],
-      extensions: [
-        '.js',
-        '.jsx',
-        '.css',
-        '.scss',
-      ],
-    },
-    optimization: {
-      minimizer: [
-        new UglifyJsPlugin({
-          cache: true,
-          exclude: /node_modules/,
-        }),
-      ],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './client/static/index.html',
-        filename: './index.html',
-      }),
-      new MiniCssExtractPlugin({filename: '[name].css', chunkFilename: '[id].css'}),
-      new OptimizeCssAssetsPlugin(),
-      new webpack.HotModuleReplacementPlugin(),
-    ],
-    output: {
-      filename: '[name].js',
-      path: path.resolve(root, 'build'),
-      publicPath: '/',
-    },
-  };
+        optimization: {
+            minimizer: [
+                new UglifyJsPlugin({
+                    cache: true,
+                    exclude: /node_modules/
+                })
+            ]
+        },
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: './client/static/index.html',
+                filename: './index.html'
+            }),
+            new MiniCssExtractPlugin({
+                filename: '[name].css',
+                chunkFilename: '[id].css'
+            }),
+            new OptimizeCssAssetsPlugin(),
+            new webpack.HotModuleReplacementPlugin()
+        ],
+        output: {
+            filename: '[name].js',
+            path: path.resolve(root, 'build'),
+            publicPath: '/'
+        }
+    };
 };
-

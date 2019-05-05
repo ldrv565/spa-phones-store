@@ -1,13 +1,15 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 import fetching from './fetching';
-import posts from './posts';
+import phones from './phones';
+import cart from './cart';
 import phone from './phone';
 
 const reducer = combineReducers({
     fetching,
-    posts,
-    phone,
+    phones,
+    cart,
+    phone
 });
 
 export default reducer;

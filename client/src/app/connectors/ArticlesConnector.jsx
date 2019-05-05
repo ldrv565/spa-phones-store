@@ -1,14 +1,25 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+
+import { getPosts } from '../actions';
 
 import Articles from '../pages/Articles/Articles';
 
 function mapStateToProps(state) {
     return {
-        posts: state.posts,
-        fetching: state.fetching,
+        phones: state.phones,
+        fetching: state.fetching
     };
 }
 
-const ArticlesContainer = connect(mapStateToProps)(Articles);
+function mapDispatchToProps(dispatch) {
+    return {
+        getPosts: () => dispatch(getPosts())
+    };
+}
+
+const ArticlesContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Articles);
 
 export default ArticlesContainer;

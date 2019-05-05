@@ -12,12 +12,14 @@
 	}
 
 	&__main {
-		flex-basis: 55%;
+		flex-basis: 35%;
+		padding-right: 10%;
 	}
 
 	&__aside {
 		flex-basis: 40%;
-		padding-right: 5%;
+		padding-right: 2%;
+		max-height: 400px;
 	}
 
 	&__footer {

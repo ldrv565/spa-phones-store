@@ -4,7 +4,11 @@ import classnames from 'classnames';
 import './Text.scss';
 
 const Text = props => (
-    <p className={classnames(props.className, 'text', {[`--${props.modifier}`]: props.modifier})}>
+    <p
+        className={classnames(props.className, 'text', {
+            [`--${props.modifier}`]: props.modifier
+        })}
+    >
         {props.children}
     </p>
 );

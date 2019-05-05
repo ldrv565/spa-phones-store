@@ -19,7 +19,15 @@ app.use((req, res, next) => {
 
 app.get('/api/phones', (req, res) => {
     db.any(
-        'SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor'
+        'SELECT id_model, model.name, description, vendor.name as "vendor", price FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor order by id_model'
+    )
+        .then(phones => res.send(phones.map((_, index) => phones[index % 4])))
+        .catch(error => console.error(error));
+});
+
+app.get('/api/cart', (req, res) => {
+    db.any(
+        'SELECT model.id_model, model.name, description, vendor.name as "vendor", price, count FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor INNER JOIN model_order ON model.id_model = model_order.id_model'
     )
         .then(phones => res.send(phones))
         .catch(error => console.error(error));
@@ -27,7 +35,7 @@ app.get('/api/phones', (req, res) => {
 
 app.get('/api/phone/:id', (req, res) => {
     db.oneOrNone(
-        `SELECT id_model, model.name, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor WHERE id_model = ${+req
+        `SELECT id_model, model.name, model.price, description, vendor.name as "vendor" FROM model INNER JOIN vendor ON model.id_vendor = vendor.id_vendor WHERE id_model = ${+req
             .params.id}`
     )
         .then(data => {

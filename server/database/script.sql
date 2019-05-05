@@ -58,3 +58,8 @@ id_user SERIAL PRIMARY KEY,
 login VARCHAR(100) NOT NULL,
 password VARCHAR(100) NOT NULL
 );
+
+
+update detail_value
+set id_model = 0
+where id_model = 50647

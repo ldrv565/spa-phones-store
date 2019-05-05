@@ -18,14 +18,14 @@ const Article = ({ match, getPost, fetching, phone }) => {
 
     const [value, setValue] = useState(1);
 
-    return fetching ? (
+    return fetching || !phone.data ? (
         <div>Loading...</div>
     ) : (
         <Content>
             <article className="article">
                 <section className="article__head">
-                    <Title>{phone.data.name}</Title>
-                    <Meta name={phone.data.vendor} />
+                    <Title>{`${phone.data.vendor} ${phone.data.name}`}</Title>
+                    <Meta name={`${phone.data.price} р.`} />
                     <Delimetr />
                 </section>
                 <section className="article__aside">
@@ -34,7 +34,6 @@ const Article = ({ match, getPost, fetching, phone }) => {
                             phone.data.imgSrc ||
                             `/api/image/${phone.data.id_model}.jpg`
                         }
-                        modifier="width"
                     />
                 </section>
                 <table className="article__main">
@@ -56,8 +55,8 @@ const Article = ({ match, getPost, fetching, phone }) => {
                         ))}
                     </tbody>
                 </table>
-                <Count value={value} setValue={setValue} />
                 <section className="article__footer">
+                    <Count value={value} setValue={setValue} />
                     <LinkButton link="/">купить</LinkButton>
                 </section>
             </article>
