@@ -4,6 +4,7 @@ export const GET_POSTS = 'GET_POSTS';
 export const SET_POSTS = 'SET_POSTS';
 export const SET_CART = 'SET_CART';
 export const SET_POST = 'SET_POST';
+export const PUT_CART = 'PUT_CART';
 
 const url = '/api';
 
@@ -42,6 +43,22 @@ export function getCart(query) {
                     payload: {
                         phones
                     }
+                })
+            );
+    };
+}
+
+export function putCart(id, count) {
+    return dispatch => {
+        dispatch({
+            type: GET_POSTS
+        });
+
+        return axios
+            .put(`${url}/cart`, null, { params: { id, count } })
+            .then(() =>
+                dispatch({
+                    type: PUT_CART
                 })
             );
     };

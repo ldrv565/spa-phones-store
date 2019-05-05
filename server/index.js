@@ -47,6 +47,20 @@ app.get('/api/phone/:id', (req, res) => {
         .catch(error => console.error(error));
 });
 
+app.put('/api/cart/', (req, res) => {
+    db.none(
+        `INSERT INTO model_order (id_order, id_model, count)
+                VALUES (0, ${req.query.id}, ${req.query.count}) 
+            ON CONFLICT ON CONSTRAINT unique_model_in_order DO
+                UPDATE
+                    SET count = ${req.query.count} 
+                        WHERE model_order.id_order = 0 
+                        AND model_order.id_model = ${req.query.id}`
+    )
+        .then(res.send(true))
+        .catch(error => console.error(error));
+});
+
 app.get('/api/image/:imageName', (req, res) => {
     const filepath = path.join(__dirname, '/assets/', req.params.imageName);
     console.log(filepath);

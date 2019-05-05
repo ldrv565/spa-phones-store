@@ -6,7 +6,6 @@ import LinkButton from '../../components/LinkButton/LinkButton';
 import Item from './Item';
 
 const Cart = ({ getCart, fetching, cart }) => {
-    const [phone] = cart;
     useEffect(() => {
         getCart();
     }, []);
@@ -15,7 +14,10 @@ const Cart = ({ getCart, fetching, cart }) => {
         <div>Loading...</div>
     ) : (
         <Content>
-            <Item phone={phone} />
+            {cart.map(model => (
+                <Item phone={model} key={model.id_model} />
+            ))}
+
             <section className="article__footer">
                 <LinkButton link="/">купить</LinkButton>
             </section>

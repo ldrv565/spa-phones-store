@@ -8,7 +8,7 @@ import Image from '../../components/Image/Image';
 import Count from '../../components/Count';
 
 const Item = ({ phone }) => {
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState(phone.count);
 
     return (
         <>

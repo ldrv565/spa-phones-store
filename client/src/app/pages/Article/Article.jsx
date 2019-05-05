@@ -6,11 +6,11 @@ import Content from '../../components/Content/Content';
 import Title from '../../components/Title/Title';
 import Meta from '../../components/Meta/Meta';
 import Delimetr from '../../components/Delimetr/Delimetr';
-import LinkButton from '../../components/LinkButton/LinkButton';
 import Image from '../../components/Image/Image';
 import Count from '../../components/Count';
+import Button from '../../components/Button';
 
-const Article = ({ match, getPost, fetching, phone }) => {
+const Article = ({ match, fetching, phone, getPost, putCart }) => {
     const { phoneId } = match.params;
     useEffect(() => {
         getPost(phoneId);
@@ -57,7 +57,9 @@ const Article = ({ match, getPost, fetching, phone }) => {
                 </table>
                 <section className="article__footer">
                     <Count value={value} setValue={setValue} />
-                    <LinkButton link="/">купить</LinkButton>
+                    <Button onClick={() => putCart(phoneId, value)}>
+                        купить
+                    </Button>
                 </section>
             </article>
         </Content>
