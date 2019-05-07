@@ -7,9 +7,7 @@ import Delimetr from '../../components/Delimetr/Delimetr';
 import Image from '../../components/Image/Image';
 import Count from '../../components/Count';
 
-const Item = ({ phone }) => {
-    const [value, setValue] = useState(phone.count);
-
+const Item = ({ phone, count, setCount }) => {
     return (
         <>
             <article className="article">
@@ -21,13 +19,14 @@ const Item = ({ phone }) => {
                 <section className="article__main">
                     <section className="article__head">
                         <Title>{`${phone.vendor} ${phone.name}`}</Title>
-                        <Meta name={phone.price} />
+                        <Meta name={`${phone.price} р.`} />
                         <Delimetr />
                         <Text>{phone.description}</Text>
                     </section>
-                    <Count value={value} setValue={setValue} />
+                    <Count value={count} setValue={setCount} />
                     <section className="article__footer">
-                        <Text>{`total count: ${value * phone.price}`}</Text>
+                        <Text>{`Общая стоимость: ${count *
+                            phone.price} р.`}</Text>
                     </section>
                 </section>
             </article>

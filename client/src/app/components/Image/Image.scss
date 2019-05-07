@@ -1,8 +1,9 @@
 @import "../variables.scss";
 
 .image {
+	display: block;
 	height: 100%;
-
+	margin: auto;
 	&.--width {
 		height: auto;
 		width: 100%;
