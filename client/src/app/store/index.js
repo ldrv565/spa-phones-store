@@ -9,7 +9,7 @@ import reducer from '../reducers';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['phone', 'phones']
+    whitelist: ['phone', 'vendors']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

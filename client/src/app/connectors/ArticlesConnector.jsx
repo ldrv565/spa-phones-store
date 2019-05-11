@@ -1,19 +1,21 @@
 import { connect } from 'react-redux';
 
-import { getPosts } from '../actions';
+import { getPosts, getVendors } from '../actions';
 
 import Articles from '../pages/Articles/Articles';
 
 function mapStateToProps(state) {
     return {
         phones: state.phones,
+        vendors: state.vendors,
         fetching: state.fetching
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPosts: () => dispatch(getPosts())
+        getPosts: query => dispatch(getPosts(query)),
+        getVendors: () => dispatch(getVendors())
     };
 }
 

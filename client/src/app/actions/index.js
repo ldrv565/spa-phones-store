@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-export const GET_POSTS = 'GET_POSTS';
+export const FETCH = 'FETCH';
 export const SET_POSTS = 'SET_POSTS';
 export const SET_CART = 'SET_CART';
 export const SET_POST = 'SET_POST';
+export const SET_VENDORS = 'SET_VENDORS';
 export const PUT_CART = 'PUT_CART';
 
 const url = '/api';
@@ -11,9 +12,8 @@ const url = '/api';
 export function getPosts(query) {
     return dispatch => {
         dispatch({
-            type: GET_POSTS
+            type: FETCH
         });
-
         return axios
             .get(`${url}/phones`, query)
             .then(response => response.data)
@@ -28,10 +28,30 @@ export function getPosts(query) {
     };
 }
 
+export function getVendors(query) {
+    return dispatch => {
+        dispatch({
+            type: FETCH
+        });
+
+        return axios
+            .get(`${url}/vendors`, query)
+            .then(response => response.data)
+            .then(vendors =>
+                dispatch({
+                    type: SET_VENDORS,
+                    payload: {
+                        vendors
+                    }
+                })
+            );
+    };
+}
+
 export function getCart(query) {
     return dispatch => {
         dispatch({
-            type: GET_POSTS
+            type: FETCH
         });
 
         return axios
@@ -48,26 +68,10 @@ export function getCart(query) {
     };
 }
 
-export function putCart(id, count) {
-    return dispatch => {
-        dispatch({
-            type: GET_POSTS
-        });
-
-        return axios
-            .put(`${url}/cart`, null, { params: { id, count } })
-            .then(() =>
-                dispatch({
-                    type: PUT_CART
-                })
-            );
-    };
-}
-
 export function getPost(id) {
     return dispatch => {
         dispatch({
-            type: GET_POSTS
+            type: FETCH
         });
 
         return axios
@@ -79,6 +83,22 @@ export function getPost(id) {
                     payload: {
                         ...phone
                     }
+                })
+            );
+    };
+}
+
+export function putCart(id, count) {
+    return dispatch => {
+        dispatch({
+            type: FETCH
+        });
+
+        return axios
+            .put(`${url}/cart`, null, { params: { id, count } })
+            .then(() =>
+                dispatch({
+                    type: PUT_CART
                 })
             );
     };

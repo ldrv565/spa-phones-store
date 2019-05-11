@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Title from '../../components/Title/Title';
 import Text from '../../components/Text/Text';
