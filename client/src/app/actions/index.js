@@ -9,7 +9,7 @@ export const PUT_CART = 'PUT_CART';
 
 const url = '/api';
 
-export function getPosts(query) {
+export function getPosts(query, onSuccess) {
     return dispatch => {
         dispatch({
             type: FETCH
@@ -17,14 +17,15 @@ export function getPosts(query) {
         return axios
             .get(`${url}/phones`, query)
             .then(response => response.data)
-            .then(phones =>
+            .then(phones => {
                 dispatch({
                     type: SET_POSTS,
                     payload: {
                         phones
                     }
-                })
-            );
+                });
+                onSuccess();
+            });
     };
 }
 

@@ -12,57 +12,78 @@ class Articles extends React.Component {
 
         this.state = {
             phones: [],
-            params: {}
+            params: {},
+            hasMoreItems: true,
+            page: 1
         };
 
-        this.isFirstPage = true;
         this.partLength = 10;
+        this.hasMoreItems = this.hasMoreItems.bind(this);
         this.loadMore = this.loadMore.bind(this);
     }
 
     componentWillMount() {
-        this.props.getPosts(null, this.setState({ phones: this.props.phones }));
         this.props.getVendors();
     }
 
-    loadMore(page) {
-        if (page !== 0) {
-            this.isFirstPage = false;
-            this.setState(prevState => ({
-                phones: [...prevState.phones, ...this.props.phones]
-            }));
-        }
+    loadMore() {
+        this.setState({
+            hasMoreItems: false
+        });
 
         this.props.getPosts(
             {
                 params: {
                     ...this.state.params,
-                    offset: (page + 1) * this.partLength,
+                    offset: this.state.page * this.partLength,
                     count: this.partLength
                 }
             },
             () =>
                 this.setState(prevState => ({
-                    phones: [...prevState.phones, ...this.props.phones]
+                    phones: prevState.phones.concat(this.props.phones),
+                    hasMoreItems: this.hasMoreItems(
+                        prevState.phones.concat(this.props.phones)
+                    )
                 }))
         );
+
+        this.setState(prevState => ({
+            page: prevState.page + 1
+        }));
+    }
+
+    hasMoreItems(phones) {
+        return phones.length < this.props.totalCount;
     }
 
     render() {
-        return this.props.fetching && this.isFirstPage ? (
-            <div>asdasdasd</div>
-        ) : (
+        return (
             <>
                 <Content>
                     <Filter title="Filter by vendor">
                         {this.props.vendors.map(vendor => (
                             <Filter.Item
                                 key={vendor}
-                                onClick={() =>
-                                    this.setState(prevState => ({
-                                        params: { ...prevState.params, vendor }
-                                    }))
-                                }
+                                onClick={() => {
+                                    this.setState({
+                                        params: { vendor },
+                                        phones: [],
+                                        hasMoreItems: false
+                                    });
+                                    this.props.getPosts(
+                                        { params: { vendor } },
+                                        () => {
+                                            this.setState({
+                                                phones: this.props.phones,
+                                                hasMoreItems: this.hasMoreItems(
+                                                    []
+                                                ),
+                                                page: 1
+                                            });
+                                        }
+                                    );
+                                }}
                             >
                                 {vendor}
                             </Filter.Item>
@@ -81,11 +102,14 @@ class Articles extends React.Component {
                 </Content>
 
                 <InfiniteScroll
-                    useWindow={false}
                     pageStart={0}
                     loadMore={this.loadMore}
-                    hasMore={this.state.phones.length < this.props.totalCount}
-                    loader={<div key={0}>Loading...</div>}
+                    hasMore={this.state.hasMoreItems}
+                    loader={
+                        <div className="loader" key={0}>
+                            Loading ...
+                        </div>
+                    }
                 >
                     <Content>
                         {this.state.phones.map(phone => (

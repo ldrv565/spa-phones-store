@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPosts: query => dispatch(getPosts(query)),
+        getPosts: (query, onSuccess) => dispatch(getPosts(query, onSuccess)),
         getVendors: () => dispatch(getVendors())
     };
 }
