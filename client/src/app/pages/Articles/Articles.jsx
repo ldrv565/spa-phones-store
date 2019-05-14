@@ -15,39 +15,42 @@ class Articles extends React.Component {
             params: {}
         };
 
+        this.isFirstPage = true;
         this.partLength = 10;
         this.loadMore = this.loadMore.bind(this);
     }
 
     componentWillMount() {
-        this.props.getPosts(this.state.params);
+        this.props.getPosts(null, this.setState({ phones: this.props.phones }));
         this.props.getVendors();
     }
 
-    componentWillUpdate(_, { params }) {
-        if (params.vendor !== this.state.params.vendor) {
-            this.setState({ phones: [] });
-            this.props.getPosts({ params });
-            console.log(params);
+    loadMore(page) {
+        if (page !== 0) {
+            this.isFirstPage = false;
+            this.setState(prevState => ({
+                phones: [...prevState.phones, ...this.props.phones]
+            }));
         }
-    }
 
-    loadMore() {
-        const currentCount = this.state.phones.length;
-        this.setState(prevState => ({
-            phones: [
-                ...prevState.phones,
-                ...this.props.phones.slice(
-                    currentCount,
-                    currentCount + this.partLength
-                )
-            ]
-        }));
+        this.props.getPosts(
+            {
+                params: {
+                    ...this.state.params,
+                    offset: (page + 1) * this.partLength,
+                    count: this.partLength
+                }
+            },
+            () =>
+                this.setState(prevState => ({
+                    phones: [...prevState.phones, ...this.props.phones]
+                }))
+        );
     }
 
     render() {
-        return this.props.fetching ? (
-            <div>Loading...</div>
+        return this.props.fetching && this.isFirstPage ? (
+            <div>asdasdasd</div>
         ) : (
             <>
                 <Content>
@@ -78,11 +81,10 @@ class Articles extends React.Component {
                 </Content>
 
                 <InfiniteScroll
+                    useWindow={false}
                     pageStart={0}
                     loadMore={this.loadMore}
-                    hasMore={
-                        this.state.phones.length < this.props.phones.length
-                    }
+                    hasMore={this.state.phones.length < this.props.totalCount}
                     loader={<div key={0}>Loading...</div>}
                 >
                     <Content>

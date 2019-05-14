@@ -6,7 +6,8 @@ import Articles from '../pages/Articles/Articles';
 
 function mapStateToProps(state) {
     return {
-        phones: state.phones,
+        phones: state.phones.data,
+        totalCount: state.phones.totalCount,
         vendors: state.vendors,
         fetching: state.fetching
     };

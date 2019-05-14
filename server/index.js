@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 const db = require('./database');
 
 const app = express();
@@ -17,21 +19,43 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(
+    session({
+        secret: 'work hard',
+        resave: true,
+        saveUninitialized: false
+    })
+);
+
+const getPhonesQuery = req =>
+    `SELECT id_model, model.name, description, vendor.name as "vendor", price FROM model 
+    RIGHT JOIN 
+    ${
+        req.query.vendor
+            ? `(SELECT * FROM vendor WHERE vendor.name = '${
+                  req.query.vendor
+              }') as "vendor"`
+            : 'vendor'
+    }
+    ON model.id_vendor = vendor.id_vendor `;
+
 app.get('/api/phones', (req, res) => {
     db.any(
-        `SELECT id_model, model.name, description, vendor.name as "vendor", price FROM model 
-            RIGHT JOIN 
+        `${getPhonesQuery(req)}
+            ORDER BY id_model
             ${
-                req.query.vendor
-                    ? `(SELECT * FROM vendor WHERE vendor.name = '${
-                          req.query.vendor
-                      }') as "vendor"`
-                    : 'vendor'
-            }
-            ON model.id_vendor = vendor.id_vendor 
-            ORDER BY id_model`
+                req.query.offset
+                    ? `LIMIT ${req.query.count} OFFSET ${req.query.offset}`
+                    : `LIMIT 10`
+            }`
     )
-        .then(phones => res.send(phones))
+        .then(phones => {
+            db.oneOrNone(
+                `SELECT COUNT(*) FROM (${getPhonesQuery(req)}) as "phones"`
+            ).then(totalCount =>
+                res.send({ data: phones, totalCount: +totalCount.count })
+            );
+        })
         .catch(error => console.error(error));
 });
 
@@ -90,6 +114,21 @@ app.get('/api/vendors', (req, res) => {
         .catch(error => console.error(error));
 });
 
+app.put('/api/register', (req, res) => {
+    if (req.body.username && req.body.password && req.body.passwordConf) {
+        const userData = {
+            username: req.body.username,
+            password: bcrypt.hash(req.body.password)
+        };
+        db.none(
+            `INSERT INTO user_table (login, password)
+            VALUES (${userData.username}, ${userData.password}) `
+        )
+            .then(() => res.redirect('/profile'))
+            .catch(error => console.error(error));
+    }
+});
+
 app.get('*', (req, res) => {
     fs.readFile(`${__dirname}/build/index.html`, (error, html) => {
         if (error) throw error;
@@ -100,4 +139,3 @@ app.get('*', (req, res) => {
 });
 
 app.listen(app.get('port'));
-// , () => console.log(`Server is listening: http://localhost:${app.get('port')}`)
