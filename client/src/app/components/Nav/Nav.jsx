@@ -7,18 +7,23 @@ const Nav = () => (
     <nav className="nav">
         <ul className="nav__list">
             <li className="nav__item">
-                <Link to="/" className="nav__link">
-                    {'Home'}
+                <Link to="/login" className="nav__link">
+                    Log in
                 </Link>
             </li>
             <li className="nav__item">
-                <Link to="/about" className="nav__link">
-                    {'About'}
+                <Link to="/logout" className="nav__link">
+                    Log out
+                </Link>
+            </li>
+            <li className="nav__item">
+                <Link to="/" className="nav__link">
+                    Store
                 </Link>
             </li>
             <li className="nav__item">
                 <Link to="/cart" className="nav__link">
-                    {'Cart'}
+                    Cart
                 </Link>
             </li>
         </ul>

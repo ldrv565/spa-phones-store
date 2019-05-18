@@ -14,7 +14,7 @@ class Articles extends React.Component {
             phones: [],
             params: {},
             hasMoreItems: true,
-            page: 1
+            page: 0
         };
 
         this.partLength = 10;
@@ -62,7 +62,7 @@ class Articles extends React.Component {
             <>
                 <Content>
                     <Filter title="Filter by vendor">
-                        {this.props.vendors.map(vendor => (
+                        {this.props.vendors.concat('').map(vendor => (
                             <Filter.Item
                                 key={vendor}
                                 onClick={() => {
@@ -85,19 +85,9 @@ class Articles extends React.Component {
                                     );
                                 }}
                             >
-                                {vendor}
+                                {vendor || 'reset'}
                             </Filter.Item>
                         ))}
-
-                        <Filter.Item
-                            onClick={() =>
-                                this.setState(prevState => ({
-                                    params: { ...prevState.params, vendor: '' }
-                                }))
-                            }
-                        >
-                            reset
-                        </Filter.Item>
                     </Filter>
                 </Content>
 

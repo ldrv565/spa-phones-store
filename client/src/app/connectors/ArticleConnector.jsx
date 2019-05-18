@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Article from '../pages/Article/Article';
+import { Article } from '../pages';
 
 import { getPost, putCart } from '../actions';
 

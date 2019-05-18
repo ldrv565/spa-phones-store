@@ -1,9 +1,10 @@
-const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const connect = require('connect');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
 const session = require('express-session');
+const bcrypt = require('bcrypt');
 const db = require('./database');
 
 const app = express();
@@ -14,17 +15,22 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-cache');
     next();
 });
 
+app.use(connect().use(cookieParser()));
 app.use(
-    session({
-        secret: 'work hard',
-        resave: true,
-        saveUninitialized: false
-    })
+    connect().use(
+        session({
+            secret: 'work hard',
+            resave: true,
+            saveUninitialized: false
+        })
+    )
 );
 
 const getPhonesQuery = req =>
@@ -90,6 +96,7 @@ app.get('/api/phone/:id', (req, res) => {
 });
 
 app.put('/api/cart/', (req, res) => {
+    console.log(req.session);
     db.none(
         `INSERT INTO model_order (id_order, id_model, count)
                 VALUES (0, ${req.query.id}, ${req.query.count}) 
@@ -114,7 +121,23 @@ app.get('/api/vendors', (req, res) => {
         .catch(error => console.error(error));
 });
 
-app.put('/api/register', (req, res) => {
+app.post('/api/login', (req, res) => {
+    if (req.body.login === 'Thor' && req.body.password === '111') {
+        req.session.authorized = true;
+        req.session.username = req.body.login;
+        res.redirect('/');
+    } else {
+        res.send(false);
+    }
+});
+
+app.get('/logout', (req, res) => {
+    console.log(111);
+    req.session.destroy();
+    res.redirect('/login');
+});
+
+app.post('/api/register', (req, res) => {
     if (req.body.username && req.body.password && req.body.passwordConf) {
         const userData = {
             username: req.body.username,
@@ -130,12 +153,10 @@ app.put('/api/register', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    fs.readFile(`${__dirname}/build/index.html`, (error, html) => {
-        if (error) throw error;
-
-        res.setHeader('Content-Type', 'text/html');
-        res.end(html);
-    });
+    console.log('server get *');
+    res.send(
+        'Server is working. Please post at "/contact" to submit a message.'
+    );
 });
 
 app.listen(app.get('port'));

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getPosts, getVendors } from '../actions';
 
-import Articles from '../pages/Articles/Articles';
+import { Articles } from '../pages';
 
 function mapStateToProps(state) {
     return {
