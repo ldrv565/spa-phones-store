@@ -124,14 +124,14 @@ app.get('/api/vendors', (req, res) => {
 app.post('/api/login', (req, res) => {
     if (req.body.login === 'Thor' && req.body.password === '111') {
         req.session.authorized = true;
-        req.session.username = req.body.login;
+        req.session.username = req.body.login; // set userId value instead userName
         res.redirect('/');
     } else {
         res.send(false);
     }
 });
 
-app.get('/logout', (req, res) => {
+app.get('/api/logout/', (req, res) => {
     console.log(111);
     req.session.destroy();
     res.redirect('/login');

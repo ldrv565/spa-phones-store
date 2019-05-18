@@ -12,9 +12,9 @@ const Nav = () => (
                 </Link>
             </li>
             <li className="nav__item">
-                <Link to="/logout" className="nav__link">
+                <a href="/api/logout" className="nav__link">
                     Log out
-                </Link>
+                </a>
             </li>
             <li className="nav__item">
                 <Link to="/" className="nav__link">
