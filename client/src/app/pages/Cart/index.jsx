@@ -1,16 +1,27 @@
 import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import Content from './Content';
 
-const Cart = ({ getCart, fetching, cart }) => {
+const Cart = ({ getCart, fetching, cart, location }) => {
+    let content = (cart.length && <Content cart={cart} />) || (
+        <div>Загрузка...</div>
+    );
+
     useEffect(() => {
         getCart();
+        if (!fetching && cart.length === 0) {
+            content = (
+                <Redirect
+                    to={{
+                        pathname: '/',
+                        state: { from: location }
+                    }}
+                />
+            );
+        }
     }, []);
 
-    return fetching || cart.length === 0 ? (
-        <div>Loading...</div>
-    ) : (
-        <Content cart={cart} />
-    );
+    return content;
 };
 export default Cart;

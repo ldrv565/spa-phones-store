@@ -37,17 +37,14 @@ app.get('/api/authorized', (req, res) => {
     res.send(req.session.authorized);
 });
 
-const getPhonesQuery = req =>
-    `SELECT id_model, model.name, description, vendor.name as "vendor", price FROM model 
-    RIGHT JOIN 
-    ${
-        req.query.vendor
-            ? `(SELECT * FROM vendor WHERE vendor.name = '${
-                  req.query.vendor
-              }') as "vendor"`
-            : 'vendor'
-    }
-    ON model.id_vendor = vendor.id_vendor `;
+const getPhonesQuery = (req, columns) =>
+    `SELECT ${
+        columns ? `${columns}, ` : ``
+    } model.id_model, model.name, description, vendor.name as "vendor", price FROM model 
+    INNER JOIN vendor 
+    ON model.id_vendor = vendor.id_vendor
+    ${req.query.vendor ? `WHERE vendor.name = '${req.query.vendor}'` : ''}
+    `;
 
 app.get('/api/phones', (req, res) => {
     db.any(
@@ -71,11 +68,12 @@ app.get('/api/phones', (req, res) => {
 
 app.get('/api/cart', (req, res) => {
     db.any(
-        `SELECT model.id_model, model.name, description, vendor.name as "vendor", price, count 
-            FROM model INNER JOIN vendor 
-            ON model.id_vendor = vendor.id_vendor 
-            INNER JOIN model_order 
-            ON model.id_model = model_order.id_model`
+        `${getPhonesQuery(req, 'count')}
+        	INNER JOIN model_order ON model.id_model = model_order.id_model
+            INNER JOIN order_table ON order_table.id_order = model_order.id_order
+            WHERE order_table.id_user = ${req.session.userId} AND 
+            (order_table.closed is null OR order_table.closed = false )
+        `
     )
         .then(phones => res.send(phones))
         .catch(error => console.error(error));
@@ -100,17 +98,42 @@ app.get('/api/phone/:id', (req, res) => {
 });
 
 app.put('/api/cart/', (req, res) => {
-    console.log(req.session);
-    db.none(
-        `INSERT INTO model_order (id_order, id_model, count)
-                VALUES (0, ${req.query.id}, ${req.query.count}) 
-            ON CONFLICT ON CONSTRAINT unique_model_in_order DO
-                UPDATE
-                    SET count = ${req.query.count} 
-                        WHERE model_order.id_order = 0 
-                        AND model_order.id_model = ${req.query.id}`
+    db.oneOrNone(
+        `SELECT id_order FROM order_table 
+            WHERE order_table.id_user = ${req.session.userId} AND 
+            (order_table.closed IS null OR order_table.closed = false )`
     )
-        .then(res.send(true))
+        .then(id => {
+            if (!id) {
+                db.oneOrNone(
+                    `INSERT INTO order_table (id_user)
+                        VALUES (${req.session.userId})
+                        RETURNING id_order;
+                    `
+                ).then(newId =>
+                    db.none(
+                        `INSERT INTO model_order (id_order, id_model, count)
+                                VALUES (${newId.id_order}, 
+                                        ${req.query.id}, 
+                                        ${req.query.count})
+                        `
+                    )
+                );
+            } else {
+                db.none(
+                    `INSERT INTO model_order (id_order, id_model, count)
+                            VALUES (${id.id_order}, 
+                                    ${req.query.id}, 
+                                    ${req.query.count})
+                        ON CONFLICT ON CONSTRAINT unique_model_in_order DO
+                            UPDATE
+                                SET count = ${req.query.count}
+                                    WHERE model_order.id_model = ${req.query.id}
+                                    AND model_order.id_order = ${id.id_order}`
+                );
+            }
+        })
+        .then(() => true)
         .catch(error => console.error(error));
 });
 
@@ -126,12 +149,23 @@ app.get('/api/vendors', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-    if (req.body.login === 'Thor' && req.body.password === '111') {
+    if (
+        req.body.login.toLowerCase() === 'thor' &&
+        req.body.password === '111'
+    ) {
         req.session.authorized = true;
-        req.session.username = req.body.login; // set userId value instead userName
-        res.redirect('/');
+        db.oneOrNone(
+            `SELECT id_user
+            FROM user_table 
+            WHERE user_table.login = '${req.body.login.toLowerCase()}'`
+        )
+            .then(id => {
+                req.session.userId = id.id_user;
+                res.redirect('/');
+            })
+            .catch(error => console.error(error));
     } else {
-        res.send(false);
+        res.redirect('/');
     }
 });
 

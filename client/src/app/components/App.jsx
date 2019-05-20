@@ -7,7 +7,9 @@ import Main from './Main/Main';
 import './App.scss';
 
 const App = ({ fetching, authorized, getLogged }) => {
-    useEffect(() => getLogged(), []);
+    useEffect(() => {
+        getLogged();
+    }, []);
 
     return (
         <Router basename="/">
