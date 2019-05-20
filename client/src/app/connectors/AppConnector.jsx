@@ -1,11 +1,24 @@
 import { connect } from 'react-redux';
 
+import { getLogged } from '../actions';
+
 import App from '../components/App';
 
-function mapStateToProps() {
-    return {};
+function mapStateToProps(state) {
+    return {
+        authorized: state.authorized,
+        fetching: state.fetching
+    };
 }
 
-const AppConnector = connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+    return {
+        getLogged: () => dispatch(getLogged())
+    };
+}
+const AppConnector = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
 
 export default AppConnector;

@@ -25,7 +25,7 @@ const Card = ({ phone }) => (
         <Text>{phone.description}</Text>
         <section>
             <LinkButton link={`/phone/${phone.id_model}`} modifier="rounded">
-                {'buy'}
+                {'more'}
             </LinkButton>
             <Delimetr />
         </section>

@@ -24,6 +24,7 @@ class Articles extends React.Component {
 
     componentWillMount() {
         this.props.getVendors();
+        this.props.getLogged();
     }
 
     loadMore() {

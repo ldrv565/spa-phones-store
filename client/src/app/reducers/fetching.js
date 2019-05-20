@@ -1,5 +1,6 @@
 import {
     FETCH,
+    SET_AUTHORIZED,
     SET_POSTS,
     SET_CART,
     SET_POST,
@@ -10,6 +11,10 @@ import {
 const reducer = (state = false, action) => {
     if (action.type === FETCH) {
         return true;
+    }
+
+    if (action.type === SET_AUTHORIZED) {
+        return false;
     }
 
     if (action.type === SET_POSTS) {

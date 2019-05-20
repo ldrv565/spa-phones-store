@@ -33,6 +33,10 @@ app.use(
     )
 );
 
+app.get('/api/authorized', (req, res) => {
+    res.send(req.session.authorized);
+});
+
 const getPhonesQuery = req =>
     `SELECT id_model, model.name, description, vendor.name as "vendor", price FROM model 
     RIGHT JOIN 
@@ -132,9 +136,8 @@ app.post('/api/login', (req, res) => {
 });
 
 app.get('/api/logout/', (req, res) => {
-    console.log(111);
     req.session.destroy();
-    res.redirect('/login');
+    res.redirect('/');
 });
 
 app.post('/api/register', (req, res) => {

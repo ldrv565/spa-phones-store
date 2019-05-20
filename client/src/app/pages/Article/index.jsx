@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import './Article.scss';
 
@@ -10,13 +11,30 @@ import Image from '../../components/Image/Image';
 import Count from '../../components/Count';
 import Button from '../../components/Button';
 
-const Article = ({ match, fetching, phone, getPost, putCart }) => {
+const Article = ({
+    match,
+    fetching,
+    phone,
+    getPost,
+    putCart,
+    authorized,
+    history
+}) => {
     const { phoneId } = match.params;
     useEffect(() => {
         getPost(phoneId);
     }, []);
 
     const [value, setValue] = useState(1);
+
+    const onClick = () => {
+        if (authorized) {
+            putCart(phoneId, value);
+            history.push('/');
+        } else {
+            history.push('/login');
+        }
+    };
 
     return fetching || !phone.data ? (
         <div>Loading...</div>
@@ -57,12 +75,10 @@ const Article = ({ match, fetching, phone, getPost, putCart }) => {
                 </table>
                 <section className="article__footer">
                     <Count value={value} setValue={setValue} />
-                    <Button onClick={() => putCart(phoneId, value)}>
-                        купить
-                    </Button>
+                    <Button onClick={onClick}>add to cart</Button>
                 </section>
             </article>
         </Content>
     );
 };
-export default Article;
+export default withRouter(Article);

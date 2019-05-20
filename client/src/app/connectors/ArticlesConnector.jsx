@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { getPosts, getVendors } from '../actions';
+import { getPosts, getVendors, getLogged } from '../actions';
 
 import { Articles } from '../pages';
 
@@ -9,14 +9,16 @@ function mapStateToProps(state) {
         phones: state.phones.data,
         totalCount: state.phones.totalCount,
         vendors: state.vendors,
-        fetching: state.fetching
+        fetching: state.fetching,
+        authorized: state.authorized
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         getPosts: (query, onSuccess) => dispatch(getPosts(query, onSuccess)),
-        getVendors: () => dispatch(getVendors())
+        getVendors: () => dispatch(getVendors()),
+        getLogged: () => dispatch(getLogged())
     };
 }
 

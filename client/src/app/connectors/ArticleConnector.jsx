@@ -7,7 +7,8 @@ import { getPost, putCart } from '../actions';
 function mapStateToProps(state) {
     return {
         phone: state.phone,
-        fetching: state.fetching
+        fetching: state.fetching,
+        authorized: state.authorized
     };
 }
 

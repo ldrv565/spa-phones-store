@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const FETCH = 'FETCH';
+export const SET_AUTHORIZED = 'SET_AUTHORIZED';
 export const SET_POSTS = 'SET_POSTS';
 export const SET_CART = 'SET_CART';
 export const SET_POST = 'SET_POST';
@@ -8,6 +9,25 @@ export const SET_VENDORS = 'SET_VENDORS';
 export const PUT_CART = 'PUT_CART';
 
 const url = '/api';
+
+export function getLogged() {
+    return dispatch => {
+        dispatch({
+            type: FETCH
+        });
+        return axios
+            .get(`${url}/authorized`)
+            .then(response => response.data)
+            .then(authorized => {
+                dispatch({
+                    type: SET_AUTHORIZED,
+                    payload: {
+                        authorized
+                    }
+                });
+            });
+    };
+}
 
 export function getPosts(query, onSuccess) {
     return dispatch => {

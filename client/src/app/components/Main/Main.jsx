@@ -1,20 +1,42 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
-import { Login } from '../../pages';
 import ArticlesConnector from '../../connectors/ArticlesConnector';
 import ArticleConnector from '../../connectors/ArticleConnector';
 import CartConnector from '../../connectors/CartConnector';
 
 import './Main.scss';
 
-const Main = () => (
+const Main = ({ authorized }) => (
     <main className="main">
         <Route exact path="/" component={ArticlesConnector} />
         <Route path="/phone/:phoneId" component={ArticleConnector} />
-        <Route path="/login" component={Login} />
-        <Route path="/cart" component={CartConnector} />
+        <PrivateRoute
+            authed={authorized}
+            path="/cart"
+            component={CartConnector}
+        />
     </main>
 );
+
+function PrivateRoute({ component: Component, authed, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={props =>
+                authed ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: '/login',
+                            state: { from: props.location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
+}
 
 export default Main;

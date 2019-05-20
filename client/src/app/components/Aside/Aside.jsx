@@ -35,7 +35,7 @@ class Aside extends React.Component {
                     <section className="aside__inner">
                         <Title h={2}>menu</Title>
                         <Delimetr modifier="short" />
-                        <Nav />
+                        <Nav authorized={this.props.authorized} />
                         <Delimetr modifier="short" />
                         <Icons />
                     </section>
