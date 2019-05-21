@@ -8,6 +8,7 @@ export const SET_CLOSE_CART = 'SET_CLOSE_CART';
 export const SET_POST = 'SET_POST';
 export const SET_VENDORS = 'SET_VENDORS';
 export const PUT_CART = 'PUT_CART';
+export const DELETE_CART = 'DELETE_CART';
 
 const url = '/api';
 
@@ -124,6 +125,21 @@ export function putCart(id, count, onSuccess) {
                 });
                 onSuccess();
             });
+    };
+}
+
+export function deleteCart(id, onSuccess) {
+    return dispatch => {
+        dispatch({
+            type: FETCH
+        });
+
+        return axios.delete(`${url}/cart/${id}`).then(() => {
+            dispatch({
+                type: DELETE_CART
+            });
+            onSuccess();
+        });
     };
 }
 

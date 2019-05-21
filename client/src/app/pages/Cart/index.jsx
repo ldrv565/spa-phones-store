@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import Content from './Content';
 
-const Cart = ({ getCart, closeCart, fetching, cart, location }) => {
+const Cart = ({ getCart, deleteCart, closeCart, fetching, cart, location }) => {
     useEffect(() => {
         getCart();
     }, []);
@@ -13,7 +13,13 @@ const Cart = ({ getCart, closeCart, fetching, cart, location }) => {
     }
 
     if (cart && cart.length) {
-        return <Content cart={cart} closeCart={closeCart} />;
+        return (
+            <Content
+                cart={cart}
+                closeCart={closeCart}
+                deleteCart={id => deleteCart(id, getCart)}
+            />
+        );
     }
 
     return (

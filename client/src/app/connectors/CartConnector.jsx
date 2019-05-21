@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { Cart } from '../pages';
 
-import { getCart, closeCart } from '../actions';
+import { getCart, deleteCart, closeCart } from '../actions';
 
 function mapStateToProps(state) {
     return {
@@ -14,6 +14,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getCart: () => dispatch(getCart()),
+        deleteCart: (id, onSucces) => dispatch(deleteCart(id, onSucces)),
         closeCart: counts => dispatch(closeCart(counts))
     };
 }

@@ -139,6 +139,25 @@ app.put('/api/cart/', (req, res) => {
         .catch(error => console.error(error));
 });
 
+app.delete('/api/cart/:id', (req, res) => {
+    db.oneOrNone(
+        `SELECT id_order FROM order_table 
+            WHERE order_table.id_user = ${req.session.userId} AND 
+            (order_table.closed IS null OR order_table.closed = false )`
+    )
+        .then(id => {
+            db.none(
+                `DELETE FROM model_order 
+                    WHERE id_model = ${+req.params.id}
+                    AND id_order = ${+id.id_order}
+                `
+            )
+                .then(() => res.send(true))
+                .catch(error => console.error(error));
+        })
+        .catch(error => console.error(error));
+});
+
 app.put('/api/cart/close', (req, res) => {
     db.oneOrNone(
         `SELECT id_order FROM order_table 

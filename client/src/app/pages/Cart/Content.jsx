@@ -6,7 +6,7 @@ import LinkButton from '../../components/LinkButton/LinkButton';
 
 import Item from './Item';
 
-const CartContent = ({ cart, closeCart }) => {
+const CartContent = ({ cart, closeCart, deleteCart }) => {
     const obj = {};
     cart.forEach(model => {
         obj[model.id_model] = model.count;
@@ -41,6 +41,7 @@ const CartContent = ({ cart, closeCart }) => {
                     phone={model}
                     count={counts[model.id_model]}
                     setCount={setCount(model.id_model)}
+                    deleteCart={deleteCart}
                 />
             ))}
 

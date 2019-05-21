@@ -6,7 +6,8 @@ import {
     SET_CLOSE_CART,
     SET_POST,
     SET_VENDORS,
-    PUT_CART
+    PUT_CART,
+    DELETE_CART
 } from '../actions';
 
 const reducer = (state = false, action) => {
@@ -39,6 +40,10 @@ const reducer = (state = false, action) => {
     }
 
     if (action.type === PUT_CART) {
+        return false;
+    }
+
+    if (action.type === DELETE_CART) {
         return false;
     }
 
