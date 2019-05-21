@@ -175,24 +175,23 @@ app.get('/api/vendors', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-    if (
-        req.body.login.toLowerCase() === 'thor' &&
-        req.body.password === '111'
-    ) {
-        req.session.authorized = true;
-        db.oneOrNone(
-            `SELECT id_user
+    db.oneOrNone(
+        `SELECT id_user, password
             FROM user_table 
             WHERE user_table.login = '${req.body.login.toLowerCase()}'`
-        )
-            .then(id => {
-                req.session.userId = id.id_user;
-                res.redirect('/');
-            })
-            .catch(error => console.error(error));
-    } else {
-        res.redirect('/');
-    }
+    )
+        .then(user => {
+            bcrypt.compare(req.body.password, user.password, (error, same) => {
+                if (same) {
+                    req.session.authorized = true;
+                    req.session.userId = user.id_user;
+                    res.redirect('/');
+                } else {
+                    res.redirect('/');
+                }
+            });
+        })
+        .catch(error => console.error(error));
 });
 
 app.get('/api/logout/', (req, res) => {
@@ -201,17 +200,20 @@ app.get('/api/logout/', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-    if (req.body.username && req.body.password && req.body.passwordConf) {
+    if (req.body.login && req.body.password) {
         const userData = {
-            username: req.body.username,
-            password: bcrypt.hash(req.body.password)
+            login: req.body.login,
+            password: bcrypt.hash(req.body.password, 1).then(password => {
+                db.none(
+                    `INSERT INTO user_table (login, password)
+                        VALUES ('${userData.login}', '${password}')`
+                )
+                    .then(() => {
+                        res.redirect('/');
+                    })
+                    .catch(error => console.error(error));
+            })
         };
-        db.none(
-            `INSERT INTO user_table (login, password)
-            VALUES (${userData.username}, ${userData.password}) `
-        )
-            .then(() => res.redirect('/profile'))
-            .catch(error => console.error(error));
     }
 });
 
