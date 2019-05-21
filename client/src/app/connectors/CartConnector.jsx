@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { Cart } from '../pages';
 
-import { getCart } from '../actions';
+import { getCart, closeCart } from '../actions';
 
 function mapStateToProps(state) {
     return {
@@ -13,7 +13,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getCart: () => dispatch(getCart())
+        getCart: () => dispatch(getCart()),
+        closeCart: counts => dispatch(closeCart(counts))
     };
 }
 

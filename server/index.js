@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const _ = require('lodash');
 const db = require('./database');
 
 const app = express();
@@ -110,31 +111,56 @@ app.put('/api/cart/', (req, res) => {
                         VALUES (${req.session.userId})
                         RETURNING id_order;
                     `
-                ).then(newId =>
-                    db.none(
-                        `INSERT INTO model_order (id_order, id_model, count)
+                )
+                    .then(newId =>
+                        db.none(
+                            `INSERT INTO model_order (id_order, id_model, count)
                                 VALUES (${newId.id_order}, 
                                         ${req.query.id}, 
-                                        ${req.query.count})
+                                        ${+req.query.count})
                         `
+                        )
                     )
-                );
+                    .then(() => res.send(true));
             } else {
                 db.none(
                     `INSERT INTO model_order (id_order, id_model, count)
                             VALUES (${id.id_order}, 
                                     ${req.query.id}, 
-                                    ${req.query.count})
+                                    ${+req.query.count})
                         ON CONFLICT ON CONSTRAINT unique_model_in_order DO
                             UPDATE
                                 SET count = ${req.query.count}
-                                    WHERE model_order.id_model = ${req.query.id}
+                                WHERE model_order.id_model = ${req.query.id}
                                     AND model_order.id_order = ${id.id_order}`
-                );
+                ).then(() => res.send(true));
             }
         })
-        .then(() => true)
         .catch(error => console.error(error));
+});
+
+app.put('/api/cart/close', (req, res) => {
+    db.oneOrNone(
+        `SELECT id_order FROM order_table 
+        WHERE order_table.id_user = ${req.session.userId}
+            AND (order_table.closed IS null OR order_table.closed = false )`
+    ).then(idOrder => {
+        const promises = _.map(
+            req.body,
+            (count, id) => `UPDATE model_order 
+                            SET count = ${count}
+                            WHERE id_model = ${id}
+                            AND id_order = ${idOrder.id_order}`
+        ).join(';');
+
+        db.none(promises).then(() =>
+            db.none(
+                `UPDATE order_table
+                        SET closed = true
+                        WHERE order_table.id_order = ${idOrder.id_order}`
+            )
+        );
+    });
 });
 
 app.get('/api/image/:imageName', (req, res) => {

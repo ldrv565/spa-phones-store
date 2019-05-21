@@ -6,7 +6,7 @@ import LinkButton from '../../components/LinkButton/LinkButton';
 
 import Item from './Item';
 
-const CartContent = ({ cart }) => {
+const CartContent = ({ cart, closeCart }) => {
     const obj = {};
     cart.forEach(model => {
         obj[model.id_model] = model.count;
@@ -29,6 +29,10 @@ const CartContent = ({ cart }) => {
         0
     );
 
+    const onClick = () => {
+        closeCart(counts);
+    };
+
     return (
         <Content>
             {cart.map(model => (
@@ -42,7 +46,9 @@ const CartContent = ({ cart }) => {
 
             <section className="article__footer">
                 <div>{`Общая сумма заказа: ${totalCost} р.`}</div>
-                <LinkButton link="/">купить</LinkButton>
+                <LinkButton link="/" onClick={onClick}>
+                    Заказать
+                </LinkButton>
             </section>
         </Content>
     );

@@ -4,6 +4,7 @@ export const FETCH = 'FETCH';
 export const SET_AUTHORIZED = 'SET_AUTHORIZED';
 export const SET_POSTS = 'SET_POSTS';
 export const SET_CART = 'SET_CART';
+export const SET_CLOSE_CART = 'SET_CLOSE_CART';
 export const SET_POST = 'SET_POST';
 export const SET_VENDORS = 'SET_VENDORS';
 export const PUT_CART = 'PUT_CART';
@@ -109,7 +110,7 @@ export function getPost(id) {
     };
 }
 
-export function putCart(id, count) {
+export function putCart(id, count, onSuccess) {
     return dispatch => {
         dispatch({
             type: FETCH
@@ -117,9 +118,27 @@ export function putCart(id, count) {
 
         return axios
             .put(`${url}/cart`, null, { params: { id, count } })
-            .then(() =>
+            .then(() => {
                 dispatch({
                     type: PUT_CART
+                });
+                onSuccess();
+            });
+    };
+}
+
+export function closeCart(counts) {
+    return dispatch => {
+        dispatch({
+            type: FETCH
+        });
+
+        return axios
+            .put(`${url}/cart/close`, counts)
+            .then(response => response.data)
+            .then(() =>
+                dispatch({
+                    type: SET_CLOSE_CART
                 })
             );
     };

@@ -29,11 +29,10 @@ const Article = ({
 
     const onClick = () => {
         if (authorized) {
-            putCart(phoneId, value);
-            history.push('/');
-        } else {
-            history.push('/login');
+            putCart(phoneId, value, () => history.push('/'));
+            return;
         }
+        history.push('/');
     };
 
     return fetching || !phone.data ? (

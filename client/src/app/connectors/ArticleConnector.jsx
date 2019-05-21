@@ -15,7 +15,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getPost: id => dispatch(getPost(id)),
-        putCart: (id, count) => dispatch(putCart(id, count))
+        putCart: (id, count, onSuccess) =>
+            dispatch(putCart(id, count, onSuccess))
     };
 }
 

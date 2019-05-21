@@ -3,6 +3,7 @@ import {
     SET_AUTHORIZED,
     SET_POSTS,
     SET_CART,
+    SET_CLOSE_CART,
     SET_POST,
     SET_VENDORS,
     PUT_CART
@@ -22,6 +23,10 @@ const reducer = (state = false, action) => {
     }
 
     if (action.type === SET_CART) {
+        return false;
+    }
+
+    if (action.type === SET_CLOSE_CART) {
         return false;
     }
 
